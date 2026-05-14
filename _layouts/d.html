@@ -21,9 +21,7 @@ layout: null
     </script>
 
     <meta name="description" content="{{ page.description | default: page.title }}">
-
     <link rel="canonical" href="{{ page.url | absolute_url }}">
-    
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
 {% include head.html %}
@@ -135,6 +133,8 @@ layout: null
         function genC(o,s,l) { return hslToHex((hue+o)%360, s, l); }
 
         var authorName = fullName.split("-").map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join(" ");
+        var isoDate = "{{ page.date | date: '%Y-%m-%d' }}T00:00:00+07:00";
+        var isoDateMod = "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}T00:00:00+07:00";
 
         // ========== SCHEMA ==========
 
@@ -145,18 +145,18 @@ layout: null
             "headline": "{{ page.title | escape }}",
             "description": "{{ page.description | default: page.title | escape }}",
             "url": "{{ page.url | absolute_url }}",
-            "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
-            "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+            "datePublished": isoDate,
+            "dateModified": isoDateMod,
             "author": { "@type": "Organization", "name": authorName },
             "publisher": { "@type": "Organization", "name": authorName }
             {% if page.image %},"image": "{{ page.image | absolute_url }}"{% endif %}
         };
         var s1 = document.createElement("script"); s1.type = "application/ld+json"; s1.textContent = JSON.stringify(articleSchema); document.head.appendChild(s1);
 
-        // 2. BreadcrumbList - support ul > li > a
-        var breadcrumbItems = [{ "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}" }];
+        // 2. BreadcrumbList - 100% dari .spo
+        var breadcrumbItems = [];
         var spoEl = document.querySelector(".excerpt.spo");
-        var position = 2;
+        var position = 1;
         if (spoEl) {
             var links = spoEl.querySelectorAll("a");
             links.forEach(function(link) {
@@ -167,9 +167,10 @@ layout: null
                 }
             });
         }
-        breadcrumbItems.push({ "@type": "ListItem", "position": position, "name": "{{ page.title | escape }}", "item": "{{ page.url | absolute_url }}" });
-        var breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": breadcrumbItems };
-        var s2 = document.createElement("script"); s2.type = "application/ld+json"; s2.textContent = JSON.stringify(breadcrumbSchema); document.head.appendChild(s2);
+        if (breadcrumbItems.length > 0) {
+            var breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": breadcrumbItems };
+            var s2 = document.createElement("script"); s2.type = "application/ld+json"; s2.textContent = JSON.stringify(breadcrumbSchema); document.head.appendChild(s2);
+        }
 
         // 3. NewsArticle
         var newsSchema = {
@@ -178,7 +179,7 @@ layout: null
             "headline": "{{ page.title | escape }}",
             "description": "{{ page.description | default: page.title | escape }}",
             "url": "{{ page.url | absolute_url }}",
-            "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+            "datePublished": isoDate,
             "author": { "@type": "Organization", "name": authorName },
             "publisher": { "@type": "Organization", "name": authorName }
             {% if page.image %},"image": "{{ page.image | absolute_url }}"{% endif %}
@@ -198,14 +199,14 @@ layout: null
         var s4 = document.createElement("script"); s4.type = "application/ld+json"; s4.textContent = JSON.stringify(imgSchema); document.head.appendChild(s4);
         {% endif %}
 
-        // 5. AggregateRating - deterministik
+        // 5. AggregateRating - parent Article
         function SeededRandom(seed) { this.seed = seed; this.next = function() { this.seed = (this.seed * 1103515245 + 12345) & 0x7fffffff; return this.seed / 0x7fffffff; }; }
         var rng = new SeededRandom(domainHash);
         var ratingValue = (3.5 + rng.next() * 1.5).toFixed(1);
         var reviewCount = Math.floor(50 + rng.next() * 450);
         var ratingSchema = {
             "@context": "https://schema.org",
-            "@type": "CreativeWork",
+            "@type": "Article",
             "name": "{{ page.title | escape }}",
             "aggregateRating": {
                 "@type": "AggregateRating",
@@ -216,16 +217,17 @@ layout: null
         };
         var s5 = document.createElement("script"); s5.type = "application/ld+json"; s5.textContent = JSON.stringify(ratingSchema); document.head.appendChild(s5);
 
-        // 6. DiscussionForumPosting
+        // 6. DiscussionForumPosting - dengan text & image
         var forumSchema = {
             "@context": "https://schema.org",
             "@type": "DiscussionForumPosting",
             "headline": "{{ page.title | escape }} - Travel Discussion",
-            "description": "Join the discussion about {{ page.title }}. Share your travel experiences, tips, and recommendations.",
+            "text": "Join the discussion about {{ page.title }}. Share your travel experiences, tips, and recommendations.",
             "url": "{{ page.url | absolute_url }}",
-            "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+            "datePublished": isoDate,
             "author": { "@type": "Organization", "name": authorName },
             "publisher": { "@type": "Organization", "name": authorName }
+            {% if page.image %},"image": "{{ page.image | absolute_url }}"{% endif %}
         };
         var s6 = document.createElement("script"); s6.type = "application/ld+json"; s6.textContent = JSON.stringify(forumSchema); document.head.appendChild(s6);
 
@@ -374,7 +376,7 @@ layout: null
 
     <div class="header-spacer"></div>
     <div class="post-container">
-<br /><br />
+
         {% if page.image %}
         <div class="featured-img-wrap">
             <img src="{{ page.image }}" alt="{{ page.title }}" loading="lazy">
