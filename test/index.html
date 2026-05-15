@@ -275,9 +275,6 @@ layout: null
         const BLOG_ID = '3878198361264397837';
         const MAX_POSTS_PER_PAGE = 24;
         const POST_SNIPPET_LENGTH = 150;
-        
-        // DEFAULT_LABEL: Label yang dipakai kalau URL tidak ada ?label=
-        // Contoh: '' (kosong = tampilkan semua), 'leaked', 'viral', 'terbaru'
         const DEFAULT_LABEL = '';
         
         // ============================================
@@ -289,8 +286,6 @@ layout: null
         const START = parseInt(p.get('start-index'))||1;
         const MAX = parseInt(p.get('max-results'))||MAX_POSTS_PER_PAGE;
         const BID = p.get('blogid')||BLOG_ID;
-        
-        // ⚠️ PRIORITAS LABEL: URL parameter dulu, baru DEFAULT_LABEL
         const LABEL = p.get('label')||DEFAULT_LABEL;
         
         $('canonicalUrl').href = location.href;
@@ -322,7 +317,9 @@ layout: null
             }
             $('pagination').style.display = 'none';
             
-            const feedUrl = base+'?alt=json-in-script&callback=sp&max-results=50';
+            // Search pakai query dari slug
+            const searchQuery = POST_SLUG.replace(/-/g,' ').substring(0,50);
+            const feedUrl = base+'?alt=json-in-script&callback=sp&max-results=10&q='+encodeURIComponent(searchQuery);
             
             window.sp = function(data){
                 const feed = data.feed;
@@ -334,16 +331,29 @@ layout: null
                 }
                 
                 const entries = Array.isArray(feed.entry)?feed.entry:[feed.entry];
-                const post = entries.find(e=>{
+                
+                // Cari postingan dengan slug cocok
+                let post = entries.find(e=>{
                     const link = (e.link||[]).find(l=>l.rel==='alternate')?.href||'';
                     const slug = link.split('/').pop().replace('.html','');
                     return slug === POST_SLUG;
                 });
                 
+                // Fallback ke postingan pertama
+                if(!post && entries.length > 0){
+                    post = entries[0];
+                }
+                
                 if(!post){
                     container.innerHTML = '<p class="error">Post not found. <a href="/" style="color:#e94560">Back to home</a></p>';
                     return;
                 }
+                
+                renderSinglePost(post, entries);
+            };
+            
+            function renderSinglePost(post, allEntries){
+                const container = $('mainContent');
                 
                 const title = post.title?.$t||'Untitled';
                 const date = fd(post.published?.$t);
@@ -399,6 +409,7 @@ layout: null
                 html += '<div class="post-body">'+fixedContent+'</div>';
                 html += '</article>';
                 
+                // Related posts
                 const relatedPosts = allEntries.filter(e=>{
                     const link = (e.link||[]).find(l=>l.rel==='alternate')?.href||'';
                     const slug = link.split('/').pop().replace('.html','');
@@ -427,7 +438,7 @@ layout: null
                 
                 container.innerHTML = html;
                 $('pagination').innerHTML = '';
-            };
+            }
             
             const s = document.createElement('script');
             s.src = feedUrl;
@@ -570,7 +581,6 @@ layout: null
                 })(content);
                 const cats = (e.category||[]).map(c=>c.term).filter(Boolean);
                 const imgAlt = altText(t, cats);
-                const snippet = strip(content).substring(0,POST_SNIPPET_LENGTH)+'...';
                 
                 html += '<a href="'+link+'" class="post-card">';
                 if(thumb){
