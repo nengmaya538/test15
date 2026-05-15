@@ -1,5 +1,6 @@
 ---
-layout: null
+layout: none
+permalink: /.index.html
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +89,7 @@ layout: null
         }
         
         /* Headings */
-        h1{font-size:20px;margin-bottom:4px}
+        h1{font-size:20px;margin-bottom:4px;color:#1a1a2e}
         .desc{font-size:12px;color:#999;margin-bottom:16px}
         
         /* Post Card (list view) */
@@ -97,53 +98,78 @@ layout: null
             box-shadow:0 1px 3px rgba(0,0,0,.06)
         }
         .post-img{width:100%;height:auto;border-radius:4px;margin-bottom:10px;display:block}
-        .post h2, .post h1{font-size:17px;margin-bottom:6px}
-        .post h2 a, .post h1 a{color:#1a1a2e;text-decoration:none}
-        .post h2 a:hover, .post h1 a:hover{color:#4a90d9}
+        .post h2{font-size:17px;margin-bottom:6px}
+        .post h2 a{color:#1a1a2e;text-decoration:none}
+        .post h2 a:hover{color:#4a90d9}
         .post-meta{font-size:11px;color:#999;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
         .post-label{display:inline-block;background:#f0f0f0;padding:2px 8px;border-radius:10px;font-size:10px;color:#666;text-decoration:none}
         .post-label:hover{background:#e0e0e0}
         .post-snippet{font-size:13px;color:#555;line-height:1.5}
         
-        /* Single Post View */
-        .single-post .post-content{
+        /* ============================================ */
+        /* SINGLE POST VIEW */
+        /* ============================================ */
+        .single-post-view{
+            background:#fff;padding:20px;border-radius:8px;
+            box-shadow:0 1px 3px rgba(0,0,0,.06)
+        }
+        .single-post-view h1.post-title{
+            font-size:22px;line-height:1.3;margin-bottom:12px;color:#1a1a2e
+        }
+        .single-post-view .post-meta{
+            padding-bottom:12px;border-bottom:1px solid #eee;margin-bottom:16px
+        }
+        .single-post-view .post-body{
             font-size:15px;line-height:1.7;color:#333
         }
-        .single-post .post-content img{
-            max-width:100%;height:auto;border-radius:6px;margin:12px 0
+        .single-post-view .post-body img{
+            max-width:100%;height:auto;border-radius:6px;margin:12px 0;display:block
         }
-        .single-post .post-content pre{
+        .single-post-view .post-body pre{
             background:#f5f5f5;padding:12px;border-radius:6px;overflow-x:auto;font-size:13px;margin:12px 0
         }
-        .single-post .post-content code{
-            background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:13px
+        .single-post-view .post-body code{
+            background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:13px;color:#333
         }
-        .single-post .post-content pre code{
-            background:none;padding:0
+        .single-post-view .post-body pre code{
+            background:none;padding:0;color:#333
         }
-        .single-post .post-content blockquote{
-            border-left:3px solid #4a90d9;padding-left:12px;color:#666;margin:12px 0;font-style:italic
+        .single-post-view .post-body blockquote{
+            border-left:3px solid #4a90d9;padding:8px 12px;margin:12px 0;
+            color:#666;background:#f9f9f9;border-radius:0 4px 4px 0
         }
-        .single-post .post-content a{color:#4a90d9}
-        .single-post .post-content h2,.single-post .post-content h3{
-            margin:16px 0 8px;font-size:18px
+        .single-post-view .post-body a{color:#4a90d9;text-decoration:underline}
+        .single-post-view .post-body a:hover{color:#357abd}
+        .single-post-view .post-body h2,.single-post-view .post-body h3,.single-post-view .post-body h4{
+            margin:20px 0 10px;color:#1a1a2e
         }
-        .single-post .post-content ul,.single-post .post-content ol{
-            margin:8px 0;padding-left:20px
+        .single-post-view .post-body h2{font-size:20px}
+        .single-post-view .post-body h3{font-size:18px}
+        .single-post-view .post-body h4{font-size:16px}
+        .single-post-view .post-body ul,.single-post-view .post-body ol{
+            margin:8px 0 8px 20px
         }
-        .single-post .post-content li{margin:4px 0}
+        .single-post-view .post-body li{margin:4px 0}
+        .single-post-view .post-body p{margin-bottom:12px}
+        .single-post-view .post-body table{
+            width:100%;border-collapse:collapse;margin:12px 0
+        }
+        .single-post-view .post-body table td,.single-post-view .post-body table th{
+            border:1px solid #ddd;padding:8px;text-align:left
+        }
+        .single-post-view .post-body table th{background:#f5f5f5;font-weight:600}
         
         /* Related Posts */
         .related-section{margin-top:24px}
-        .related-section h3{font-size:16px;margin-bottom:12px;color:#333}
-        .related-posts{display:flex;flex-wrap:wrap;gap:8px}
+        .related-section h3{font-size:16px;margin-bottom:12px;color:#1a1a2e}
+        .related-posts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
         .related-post{
-            flex:1 1 calc(50% - 4px);min-width:150px;background:#fff;
-            padding:12px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.06);text-decoration:none
+            background:#fff;padding:10px;border-radius:6px;
+            box-shadow:0 1px 3px rgba(0,0,0,.06);text-decoration:none;display:block
         }
         .related-post:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
-        .related-post-img{width:100%;height:100px;object-fit:cover;border-radius:4px;margin-bottom:8px}
-        .related-post-title{font-size:13px;font-weight:600;color:#1a1a2e;line-height:1.3}
+        .related-post-img{width:100%;height:90px;object-fit:cover;border-radius:4px;margin-bottom:8px;display:block}
+        .related-post-title{font-size:12px;font-weight:600;color:#1a1a2e;line-height:1.3;display:block}
         
         /* Pagination */
         .pagination{display:flex;justify-content:center;gap:6px;margin-top:20px}
@@ -163,26 +189,41 @@ layout: null
         
         footer{margin-top:32px;padding-top:16px;border-top:1px solid #eee;text-align:center;font-size:11px;color:#999}
         
+        @media(max-width:480px){
+            .single-post-view{padding:14px}
+            .single-post-view h1.post-title{font-size:19px}
+            .single-post-view .post-body{font-size:14px}
+            .related-posts{grid-template-columns:repeat(2,1fr);gap:8px}
+        }
+        
         /* Dark mode */
         @media(prefers-color-scheme:dark){
             body{background:#1a1a1a;color:#e0e0e0}
-            .header,.menu,.post,.filter-bar{background:#2d2d2d}
+            .header,.menu,.post,.filter-bar,.single-post-view{background:#2d2d2d}
             .header{border-bottom:1px solid #444}
             .header-btn{color:#ccc}
             .menu{border-color:#444}
             .menu a{color:#ccc}
             .search-input{background:#2d2d2d;border-color:#444;color:#e0e0e0}
-            .post h2 a,.post h1 a{color:#e0e0e0}
-            .post-snippet,.post-content{color:#bbb}
+            h1,.single-post-view h1.post-title,.related-section h3{color:#e0e0e0}
+            .post h2 a{color:#e0e0e0}
+            .post-snippet{color:#bbb}
             .post-label{background:#3d3d3d;color:#bbb}
             .post-label:hover{background:#555}
             .pagination a{background:#333;color:#bbb}
             .breadcrumb span,.filter-bar{color:#bbb}
             .info-msg{background:#3d3520;border-color:#665500;color:#e0c860}
-            .single-post .post-content pre{background:#333}
-            .single-post .post-content code{background:#444;color:#ddd}
-            .single-post .post-content pre code{background:none}
-            .single-post .post-content blockquote{color:#bbb}
+            
+            .single-post-view .post-body{color:#ccc}
+            .single-post-view .post-body pre{background:#333}
+            .single-post-view .post-body code{background:#444;color:#ddd}
+            .single-post-view .post-body pre code{background:none;color:#ddd}
+            .single-post-view .post-body blockquote{color:#bbb;background:#333}
+            .single-post-view .post-body h2,.single-post-view .post-body h3,.single-post-view .post-body h4{color:#e0e0e0}
+            .single-post-view .post-body table td,.single-post-view .post-body table th{border-color:#444}
+            .single-post-view .post-body table th{background:#333}
+            .single-post-view .post-meta{border-bottom-color:#444}
+            
             .related-post{background:#2d2d2d}
             .related-post-title{color:#e0e0e0}
             footer{border-color:#333}
@@ -216,7 +257,7 @@ layout: null
         <a href="/terms-and-conditions/">Terms &amp; Conditions</a>
     </nav>
 
-    <!-- BACK BUTTON (Single Post) -->
+    <!-- BACK BUTTON -->
     <a class="back-link" id="backLink" style="display:none" href="/">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         Back to posts
@@ -227,13 +268,13 @@ layout: null
         <a href="/">Home</a>
     </div>
 
-    <!-- SEARCH (hidden in single post) -->
+    <!-- SEARCH -->
     <form class="search-wrap" id="searchForm" action="/" method="get">
         <input class="search-input" type="search" name="label" placeholder="Search label..." aria-label="Search by label">
         <button class="search-btn" type="submit">Search</button>
     </form>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <h1 id="pageHeading">Loading...</h1>
     <p class="desc" id="siteDesc"></p>
     <div class="filter-bar" id="filterBar" style="display:none"></div>
@@ -253,7 +294,6 @@ layout: null
         if(parts.length>2&&parts[0]==='www') displayName = parts[1];
         displayName = displayName.replace(/[\.-]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
         
-        // 3 letters for SVG
         const letters = displayName.replace(/[^a-zA-Z0-9]/g,'').toUpperCase().substring(0,3)||'B';
         $('brandSvgText').textContent = letters;
         $('blogTitle').textContent = displayName;
@@ -292,28 +332,31 @@ layout: null
         const START = parseInt(p.get('start-index'))||1;
         const BID = p.get('blogid')||'3849070220815751744';
         
-        // Canonical = URL saat ini
         $('canonicalUrl').href = location.href;
+        
+        // Helpers
+        function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+        function hd(u){return u&&u.includes('googleusercontent.com')?u.replace(/\/s\d+(-c)?\//,'/s1600/'):u}
+        function strip(h){if(!h)return'';const d=document.createElement('div');d.innerHTML=h;return(d.textContent||'').replace(/\s+/g,' ').trim()}
+        function fd(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}catch(e){return d}}
+        
+        const base = host.includes('blogspot.com')?
+            'https://'+host+'/feeds/posts/default':
+            'https://www.blogger.com/feeds/'+BID+'/posts/default';
         
         // ============================================
         // SINGLE POST MODE
         // ============================================
         if(POST_SLUG){
-            // Sembunyikan search form
             $('searchForm').style.display = 'none';
-            
-            // Tampilkan back button
             $('backLink').style.display = 'inline-flex';
-            // Back button arahkan ke halaman sebelumnya atau home
             if(document.referrer && document.referrer.includes(host)){
                 $('backLink').href = document.referrer;
             }
+            $('pagination').style.display = 'none';
             
-            // Ambil postingan via feed (cari by slug)
-            const feedUrl = (host.includes('blogspot.com')?
-                'https://'+host+'/feeds/posts/default':
-                'https://www.blogger.com/feeds/'+BID+'/posts/default')+
-                '?alt=json-in-script&callback=sp&max-results=1';
+            // Ambil beberapa postingan terbaru untuk mencari slug yang cocok
+            const feedUrl = base+'?alt=json-in-script&callback=sp&max-results=50';
             
             window.sp = function(data){
                 const feed = data.feed;
@@ -326,7 +369,7 @@ layout: null
                 
                 const entries = Array.isArray(feed.entry)?feed.entry:[feed.entry];
                 
-                // Cari postingan yang slug-nya cocok
+                // Cari postingan dengan slug yang cocok
                 const post = entries.find(e=>{
                     const link = (e.link||[]).find(l=>l.rel==='alternate')?.href||'';
                     const slug = link.split('/').pop().replace('.html','');
@@ -334,26 +377,22 @@ layout: null
                 });
                 
                 if(!post){
-                    // Slug tidak cocok, coba fetch dengan URL spesifik
-                    const altLink = entries[0]?.link?.find(l=>l.rel==='alternate')?.href||'';
-                    const slug2 = altLink.split('/').pop().replace('.html','');
-                    if(slug2 !== POST_SLUG){
-                        container.innerHTML = '<p class="error">Post not found.</p>';
-                        return;
-                    }
-                    renderSinglePost(entries[0], container);
-                } else {
-                    renderSinglePost(post, container);
+                    container.innerHTML = '<p class="error">Post not found. <a href="/">Back to home</a></p>';
+                    return;
                 }
+                
+                renderSinglePost(post, entries);
             };
             
-            function renderSinglePost(post, container){
+            function renderSinglePost(post, allEntries){
+                const container = $('mainContent');
                 const title = post.title?.$t||'Untitled';
                 const date = fd(post.published?.$t);
                 const content = post.content?.$t||post.summary?.$t||'';
                 const cats = (post.category||[]).map(c=>c.term).filter(Boolean);
+                const author = post.author?.[0]?.name?.$t||'';
                 
-                // Update meta
+                // IDENTITAS HALAMAN = JUDUL POST
                 document.title = title + ' — ' + displayName;
                 $('pageHeading').textContent = title;
                 $('siteDesc').textContent = strip(content).substring(0,160);
@@ -364,62 +403,40 @@ layout: null
                 if(!md.parentNode) document.head.appendChild(md);
                 
                 // Breadcrumb
+                let breadHtml = '<a href="/">Home</a>';
                 if(cats.length){
-                    $('breadcrumb').innerHTML = '<a href="/">Home</a> &rsaquo; '+
-                        cats.map(c=>'<a href="/?label='+encodeURIComponent(c)+'">'+esc(c)+'</a>').join(', ')+
-                        ' &rsaquo; <span>'+esc(title)+'</span>';
-                } else {
-                    $('breadcrumb').innerHTML = '<a href="/">Home</a> &rsaquo; <span>'+esc(title)+'</span>';
+                    breadHtml += ' &rsaquo; ' + cats.map(c=>
+                        '<a href="/?label='+encodeURIComponent(c)+'">'+esc(c)+'</a>'
+                    ).join(', ');
                 }
+                breadHtml += ' &rsaquo; <span>'+esc(title)+'</span>';
+                $('breadcrumb').innerHTML = breadHtml;
                 
-                // Render
-                let html = '<article class="post single-post">';
+                // Render single post
+                let html = '<article class="single-post-view">';
+                html += '<h1 class="post-title">'+esc(title)+'</h1>';
                 html += '<div class="post-meta">';
+                if(author) html += '<span>By '+esc(author)+'</span>';
                 if(date) html += '<time datetime="'+(post.published?.$t||'')+'">'+date+'</time>';
                 if(cats.length) html += cats.map(c=>
                     '<a href="/?label='+encodeURIComponent(c)+'" class="post-label">#'+esc(c)+'</a>'
                 ).join('');
                 html += '</div>';
-                html += '<div class="post-content">'+content+'</div>';
+                html += '<div class="post-body">'+content+'</div>';
                 html += '</article>';
                 
                 // Related posts
-                if(cats.length){
-                    html += '<div class="related-section"><h3>Related Posts</h3>';
-                    html += '<p style="font-size:13px;color:#999">Loading related posts...</p></div>';
-                }
+                const relatedPosts = allEntries.filter(e=>{
+                    const link = (e.link||[]).find(l=>l.rel==='alternate')?.href||'';
+                    const slug = link.split('/').pop().replace('.html','');
+                    if(slug === POST_SLUG) return false;
+                    const eCats = (e.category||[]).map(c=>c.term.toLowerCase());
+                    return cats.some(c=>eCats.includes(c.toLowerCase()));
+                }).slice(0,4);
                 
-                container.innerHTML = html;
-                $('pagination').innerHTML = '';
-                
-                // Load related posts
-                if(cats.length){
-                    loadRelatedPosts(cats[0]);
-                }
-            }
-            
-            function loadRelatedPosts(label){
-                const url = (host.includes('blogspot.com')?
-                    'https://'+host+'/feeds/posts/default':
-                    'https://www.blogger.com/feeds/'+BID+'/posts/default')+
-                    '?alt=json-in-script&callback=rp&max-results=5&category='+encodeURIComponent(label);
-                
-                window.rp = function(data){
-                    const feed = data.feed;
-                    if(!feed||!feed.entry) return;
-                    
-                    const entries = Array.isArray(feed.entry)?feed.entry:[feed.entry];
-                    // Filter out current post
-                    const related = entries.filter(e=>{
-                        const link = (e.link||[]).find(l=>l.rel==='alternate')?.href||'';
-                        const slug = link.split('/').pop().replace('.html','');
-                        return slug !== POST_SLUG;
-                    }).slice(0,4);
-                    
-                    if(!related.length) return;
-                    
-                    let html = '<div class="related-section"><h3>Related Posts</h3><div class="related-posts">';
-                    related.forEach(e=>{
+                if(relatedPosts.length){
+                    html += '<div class="related-section"><h3>Related Posts</h3><div class="related-posts">';
+                    relatedPosts.forEach(e=>{
                         const t = e.title?.$t||'Untitled';
                         const link = (e.link||[]).find(l=>l.rel==='alternate')?.href||'#';
                         const slug = link.split('/').pop().replace('.html','');
@@ -427,41 +444,31 @@ layout: null
                         const relUrl = '/?p='+slug+(BID!=='3849070220815751744'?'&blogid='+BID:'');
                         
                         html += '<a href="'+relUrl+'" class="related-post">';
-                        if(thumb) html += '<img class="related-post-img" src="'+thumb+'" alt="'+esc(t)+'" loading="lazy">';
+                        if(thumb) html += '<img class="related-post-img" src="'+thumb+'" alt="'+esc(t)+'" loading="lazy" onerror="this.style.display=\'none\'">';
                         html += '<span class="related-post-title">'+esc(t)+'</span></a>';
                     });
                     html += '</div></div>';
-                    
-                    const container = $('mainContent');
-                    const existing = container.querySelector('.related-section');
-                    if(existing) existing.outerHTML = html;
-                    else container.innerHTML += html;
-                };
+                }
                 
-                const s = document.createElement('script');
-                s.src = url;
-                s.async = true;
-                document.head.appendChild(s);
+                container.innerHTML = html;
+                $('pagination').innerHTML = '';
             }
             
-            // Load single post
             const s = document.createElement('script');
             s.src = feedUrl;
             s.async = true;
+            s.onerror = ()=>$('mainContent').innerHTML='<p class="error">Failed to load post.</p>';
             document.head.appendChild(s);
-            
-            return; // Stop here, don't execute list mode
+            return;
         }
         
         // ============================================
-        // LIST MODE (existing code)
+        // LIST MODE
         // ============================================
         
-        // Set search value
         const si = document.querySelector('.search-input');
         if(si && LABEL) si.value = LABEL;
         
-        // Title & meta (QUERY = identitas halaman)
         if(LABEL){
             const pageTitle = LABEL + ' — ' + displayName;
             const pageDesc = 'Posts and articles about ' + LABEL + ' on ' + displayName + '.';
@@ -489,11 +496,6 @@ layout: null
             document.head.appendChild(md);
         }
         
-        // Helpers
-        function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-        function hd(u){return u&&u.includes('googleusercontent.com')?u.replace(/\/s\d+(-c)?\//,'/s1600/'):u}
-        function strip(h){if(!h)return'';const d=document.createElement('div');d.innerHTML=h;return(d.textContent||'').replace(/\s+/g,' ').trim()}
-        function fd(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}catch(e){return d}}
         function il(u){
             if(!u)return'#';
             try{
@@ -506,11 +508,6 @@ layout: null
             }catch(e){}
             return u;
         }
-        
-        // Build feed URL
-        const base = host.includes('blogspot.com')?
-            'https://'+host+'/feeds/posts/default':
-            'https://www.blogger.com/feeds/'+BID+'/posts/default';
         
         function buildUrl(useLabel){
             const fp = new URLSearchParams();
@@ -525,7 +522,6 @@ layout: null
         let feedUrl = buildUrl(LABEL);
         let labelMatched = false;
         
-        // Render posts (LIST MODE)
         window.hp = function(data){
             const feed = data.feed;
             const container = $('mainContent');
@@ -598,7 +594,6 @@ layout: null
             
             container.innerHTML = html;
             
-            // Pagination
             const pages = Math.ceil(total/MAX);
             const cur = Math.floor((START-1)/MAX)+1;
             const pg = $('pagination');
@@ -631,7 +626,6 @@ layout: null
             pg.innerHTML = ph;
         };
         
-        // Load feed
         const s = document.createElement('script');
         s.src = feedUrl;
         s.async = true;
