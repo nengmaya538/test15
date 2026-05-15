@@ -1,5 +1,6 @@
 ---
-layout: null
+layout: none
+permalink: /.index.html
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -68,6 +69,11 @@ layout: null
         }
         .filter-bar a{margin-left:auto;color:#4a90d9;text-decoration:none;font-weight:600}
         
+        .info-msg{
+            padding:8px 12px;background:#fff3cd;border:1px solid #ffc107;
+            border-radius:6px;margin-bottom:12px;font-size:12px;color:#856404
+        }
+        
         h1{font-size:20px;margin-bottom:4px}
         .desc{font-size:12px;color:#999;margin-bottom:16px}
         
@@ -111,6 +117,7 @@ layout: null
             .post-label{background:#3d3d3d;color:#bbb}
             .pagination a{background:#333;color:#bbb}
             .breadcrumb span,.filter-bar{color:#bbb}
+            .info-msg{background:#3d3520;border-color:#665500;color:#e0c860}
             footer{border-color:#333}
         }
     </style>
@@ -159,7 +166,6 @@ layout: null
 
     <script>
     (function(){
-        // DOM ready
         const $ = id => document.getElementById(id);
         
         // Domain info
@@ -171,7 +177,6 @@ layout: null
         
         // Hue from hash
         let h=0;for(let i=0;i<host.length;i++)h=((h<<5)-h+host.charCodeAt(i))|0;
-        const hue = Math.abs(h)%360;
         
         // 3 letters
         const letters = displayName.replace(/[^a-zA-Z0-9]/g,'').toUpperCase().substring(0,3)||'B';
@@ -179,7 +184,7 @@ layout: null
         $('brandSvgText').textContent = letters;
         $('blogTitle').textContent = displayName;
         
-        // Menu toggle - simple
+        // Menu toggle
         const menu = $('menuPanel');
         const iconM = $('iconMenu');
         const iconC = $('iconClose');
@@ -230,7 +235,7 @@ layout: null
         md.name='description';md.content=desc;
         document.head.appendChild(md);
         
-        // Canonical
+        // Canonical - kalau label tidak ditemukan, canonical tetap ke halaman tanpa label
         const cp = new URLSearchParams();
         if(LABEL) cp.set('label',LABEL);
         if(MAX!==15) cp.set('max-results',MAX);
@@ -249,18 +254,6 @@ layout: null
             $('breadcrumb').innerHTML='<a href="/">Home</a> &rsaquo; <span>'+esc(LABEL)+'</span>';
         }
         
-        // Feed URL
-        const base = host.includes('blogspot.com')?
-            'https://'+host+'/feeds/posts/default':
-            'https://www.blogger.com/feeds/'+BID+'/posts/default';
-        
-        const fp = new URLSearchParams();
-        fp.set('alt','json-in-script');
-        fp.set('callback','hp');
-        fp.set('max-results',MAX);
-        fp.set('start-index',START);
-        if(LABEL) fp.set('category',LABEL);
-        
         // Helpers
         function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
         function hd(u){return u&&u.includes('googleusercontent.com')?u.replace(/\/s\d+(-c)?\//,'/s1600/'):u}
@@ -272,14 +265,77 @@ layout: null
             return u;
         }
         
-        // Render posts - SINGLE innerHTML (fastest)
+        // Build feed URL
+        const base = host.includes('blogspot.com')?
+            'https://'+host+'/feeds/posts/default':
+            'https://www.blogger.com/feeds/'+BID+'/posts/default';
+        
+        function buildUrl(useLabel){
+            const fp = new URLSearchParams();
+            fp.set('alt','json-in-script');
+            fp.set('callback','hp');
+            fp.set('max-results',MAX);
+            fp.set('start-index',START);
+            if(useLabel) fp.set('category',useLabel);
+            return base+'?'+fp.toString();
+        }
+        
+        // Main feed (pakai label kalau ada)
+        let feedUrl = buildUrl(LABEL);
+        let labelMatched = false;
+        
+        // Render posts
         window.hp = function(data){
             const feed = data.feed;
             const container = $('postList');
             
-            if(!feed||!feed.entry){
-                container.innerHTML = '<p class="empty">No posts found for "<strong>'+esc(LABEL)+'</strong>"</p>';
+            // Kalau label tidak ditemukan & belum fallback → fetch ulang tanpa label
+            if(LABEL && !labelMatched && (!feed||!feed.entry)){
+                labelMatched = true; // prevent infinite loop
+                feedUrl = buildUrl(''); // tanpa label
+                const s = document.createElement('script');
+                s.src = feedUrl;
+                s.async = true;
+                document.head.appendChild(s);
                 return;
+            }
+            
+            if(!feed||!feed.entry){
+                container.innerHTML = '<p class="empty">No posts found.</p>';
+                return;
+            }
+            
+            // Tampilkan info kalau label tidak cocok & menampilkan postingan terbaru
+            if(LABEL && !labelMatched && feed.entry){
+                // Cek apakah hasil ini dari label atau fallback
+                const entries = Array.isArray(feed.entry)?feed.entry:[feed.entry];
+                const hasMatchingLabel = entries.some(e=>{
+                    const cats = (e.category||[]).map(c=>c.term.toLowerCase());
+                    return cats.includes(LABEL.toLowerCase());
+                });
+                
+                if(!hasMatchingLabel){
+                    labelMatched = true;
+                    // Tampilkan info bar
+                    const infoBar = document.createElement('div');
+                    infoBar.className = 'info-msg';
+                    infoBar.innerHTML = 'Label "<strong>'+esc(LABEL)+'</strong>" not found. Showing latest posts instead.';
+                    container.parentNode.insertBefore(infoBar, container);
+                    
+                    // Update canonical ke halaman tanpa label (hindari duplicate content)
+                    const cleanCanon = new URLSearchParams();
+                    if(MAX!==15) cleanCanon.set('max-results',MAX);
+                    if(canon) canon.href = cleanCanon.toString()?location.origin+'/?'+cleanCanon:location.origin+'/';
+                    
+                    // Update title
+                    document.title = displayName+' — Latest Posts';
+                    
+                    // Hapus filter bar
+                    $('filterBar').style.display = 'none';
+                    
+                    // Reset breadcrumb
+                    $('breadcrumb').innerHTML = '<a href="/">Home</a> &rsaquo; <span>Latest Posts</span>';
+                }
             }
             
             const entries = Array.isArray(feed.entry)?feed.entry:[feed.entry];
@@ -325,7 +381,7 @@ layout: null
             function bu(page){
                 const pp=new URLSearchParams();
                 if(BID!=='3849070220815751744')pp.set('blogid',BID);
-                if(LABEL)pp.set('label',LABEL);
+                if(LABEL && !labelMatched)pp.set('label',LABEL); // hanya tambah label kalau belum fallback
                 if(MAX!==15)pp.set('max-results',MAX);
                 if(page>1)pp.set('start-index',(page-1)*MAX+1);
                 const q=pp.toString();return q?'/?'+q:'/';
@@ -348,9 +404,9 @@ layout: null
             pg.innerHTML = ph;
         };
         
-        // Load
+        // Load feed
         const s = document.createElement('script');
-        s.src = base+'?'+fp.toString();
+        s.src = feedUrl;
         s.async = true;
         s.onerror = ()=>$('postList').innerHTML='<p class="error">Failed to load.</p>';
         document.head.appendChild(s);
